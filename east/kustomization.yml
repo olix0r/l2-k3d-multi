@@ -1,2 +1,4 @@
 bases:
   - https://github.com/BuoyantIO/emojivoto/kustomize/deployment
+resources:
+  - split.yml

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -eu
+set -x
 
 kubectl --context=k3d-east kustomize ./east |
     linkerd --context=k3d-east inject - |
