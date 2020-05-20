@@ -1,4 +1,10 @@
 bases:
-  - https://github.com/BuoyantIO/emojivoto/kustomize/deployment
-resources:
-  - split.yml
+- ../base
+
+# patchesJson6902:
+#   - path: fail_voting_west.yml
+#     target:
+#       group: split.smi-spec.io
+#       version: v1alpha1
+#       kind: TrafficSplit
+#       name: voting

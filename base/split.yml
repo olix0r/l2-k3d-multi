@@ -9,8 +9,6 @@ spec:
   backends:
     - service: voting-svc
       weight: 1000m
-    - service: voting-svc-west
-      weight: 0m
 ---
 apiVersion: split.smi-spec.io/v1alpha1
 kind: TrafficSplit
@@ -22,8 +20,6 @@ spec:
   backends:
     - service: emoji-svc
       weight: 1000m
-    - service: emoji-svc-west
-      weight: 0m
 ---
 apiVersion: split.smi-spec.io/v1alpha1
 kind: TrafficSplit
@@ -35,5 +31,3 @@ spec:
   backends:
     - service: web-svc
       weight: 1000m
-    - service: web-svc-west
-      weight: 0m

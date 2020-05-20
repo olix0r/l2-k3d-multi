@@ -1,0 +1,6 @@
+- op: add
+  path: /metadata/annotations
+  value:
+    mirror.linkerd.io/gateway-name: linkerd-gateway
+    mirror.linkerd.io/gateway-ns: linkerd-multicluster
+     

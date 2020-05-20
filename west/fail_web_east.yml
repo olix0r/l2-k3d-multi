@@ -1,0 +1,5 @@
+- op: replace
+  path: /spec/backends
+  value:
+    - service: web-svc-east
+      weight: 1000m

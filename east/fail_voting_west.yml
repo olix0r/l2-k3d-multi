@@ -1,0 +1,5 @@
+- op: replace
+  path: /spec/backends
+  value:
+    - service: voting-svc-wast
+      weight: 1000m

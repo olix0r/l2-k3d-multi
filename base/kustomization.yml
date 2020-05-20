@@ -1,0 +1,40 @@
+bases:
+- https://github.com/BuoyantIO/emojivoto/kustomize/deployment
+
+resources:
+- split.yml
+
+patchesJson6902:
+- target:
+    group: apps
+    kind: Deployment
+    version: v1
+    name: emoji
+  path: inject_linkerd.yml
+- target:
+    group: apps
+    kind: Deployment
+    version: v1
+    name: voting
+  path: inject_linkerd.yml
+- target:
+    group: apps
+    kind: Deployment
+    version: v1
+    name: web
+  path: inject_linkerd.yml
+- target:
+    kind: Service
+    version: v1
+    name: emoji-svc
+  path: export_service.yml
+- target:
+    kind: Service
+    version: v1
+    name: voting-svc
+  path: export_service.yml
+- target:
+    kind: Service
+    version: v1
+    name: web-svc
+  path: export_service.yml
