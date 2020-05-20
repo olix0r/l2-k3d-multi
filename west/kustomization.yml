@@ -1,0 +1,2 @@
+bases:
+  - https://github.com/BuoyantIO/emojivoto/kustomize/deployment
