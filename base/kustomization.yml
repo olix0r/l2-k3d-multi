@@ -15,6 +15,12 @@ patchesJson6902:
     group: apps
     kind: Deployment
     version: v1
+    name: vote-bot
+  path: inject_linkerd.yml
+- target:
+    group: apps
+    kind: Deployment
+    version: v1
     name: voting
   path: inject_linkerd.yml
 - target:
