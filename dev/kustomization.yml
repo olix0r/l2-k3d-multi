@@ -1,0 +1,28 @@
+bases:
+- ../base
+
+patchesJson6902:
+  - path: emoji_split.yml
+    target:
+      group: split.smi-spec.io
+      version: v1alpha1
+      kind: TrafficSplit
+      name: emoji
+  - path: voting_split.yml
+    target:
+      group: split.smi-spec.io
+      version: v1alpha1
+      kind: TrafficSplit
+      name: voting
+  - path: no_replicas.yml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: emoji
+  - path: no_replicas.yml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: voting

@@ -7,17 +7,34 @@ failover & traffic-splitting in a multi-cluster mesh of Kubernetes clusters.
 - [`smallstep/cli`](https://github.com/smallstep/cli/releases)
 - [`linkerd:edge-20.5.3`+](https://github.com/linkerd/linkerd2/releases)
 
-[`./setup.sh`](./setup.sh) initializes a temporary CA and a pair of clusters
-in `k3d`: _east_ and _west_.
+[`./create.sh`](./create.sh) initializes a temporary CA and a set of clusters
+in `k3d`: _dev_, _east_, and _west_.
 
-Then, deploy the [emojivoto](https://github.com/BuoyantIO/emojivoto/) app to each cluster:
+We can then install the [app](https://github.com/BuoyantIO/emojivoto/) into
+the _east_ and _west_ clusters:
 
 ```sh
 :; kubectl --context=k3d-east apply -k east
 :; kubectl --context=k3d-west apply -k west
 ```
 
-Then, note that [`./east/kustomization.yml`](./east/kustomization.yml) and
-[`./west/kustomization.yml`](./west/kustomization.yml) have commented
-sections disabling traffic shifts between clusters. Uncomment these to move
-traffic between clusters!
+These clusters operate independently by default.
+
+[`./link.sh`](./link.sh) configures linkerd-multicluster gateways & service
+mirrors on each cluster. _east_ and _west_ are configured to discover
+services from each other. _dev_ is only configured run the _web_ and
+_vote-bot_ components, and it discovers other services from both _east_ and
+_west_.
+
+At this point, we can start our _dev_ setup which uses the voting and emoji
+services in the _east_ and _west_ clusters:
+
+```sh
+:; kubectl --context=k3d-dev apply -k dev
+```
+
+We can also route traffic between the _east_ and _west_ clusters.
+See the commented sections in
+[`./east/kustomization.yml`](./east/kustomization.yml) and
+[`./west/kustomization.yml`](./west/kustomization.yml). These configurations
+can be modified to reroute traffic between clusters!

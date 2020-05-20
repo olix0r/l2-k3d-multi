@@ -1,0 +1,7 @@
+- op: replace
+  path: /spec/backends
+  value:
+    - service: emoji-svc-east
+      weight: 500m
+    - service: emoji-svc-west
+      weight: 500m
