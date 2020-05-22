@@ -61,16 +61,15 @@ for cluster in dev east west ; do
     sleep 30
     while ! linkerd --context="k3d-$cluster" check ; do :; done
 
-    # Setup a gateway on the remote cluster.
     kubectl --context="k3d-$cluster" create ns linkerd-multicluster
-    linkerd --context="k3d-$cluster" cluster setup-remote \
-            --namespace=linkerd-multicluster \
-            --incoming-port=4180 \
-            --probe-port=4181 |
+    kubectl --context="k3d-$cluster" annotate ns/linkerd-multicluster \
+        config.linkerd.io/proxy-version='ver-prevent-loop.0'
+
+    # Setup a gateway to receive traffic from other clusters.
+    linkerd --context="k3d-$cluster" cluster setup-remote |
         kubectl --context="k3d-$cluster" apply -f -
 
-    linkerd --context="k3d-$cluster" install-service-mirror \
-            --namespace=linkerd-multicluster \
-            --log-level=debug |
+    # Setup a service-mirror to discover services from other clusters.
+    linkerd --context="k3d-$cluster" install-service-mirror  --log-level=debug |
         kubectl --context="k3d-$cluster" apply -f -
 done

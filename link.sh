@@ -13,8 +13,7 @@ fetch_credentials() {
         -o 'go-template={{ (index .status.loadBalancer.ingress 0).ip }}')
     secret=$(linkerd --context="k3d-$cluster" cluster get-credentials \
             --cluster-name="$cluster" \
-            --remote-cluster-domain="${cluster}.${ORG_DOMAIN}" \
-            --service-account-namespace=linkerd-multicluster)
+            --remote-cluster-domain="${cluster}.${ORG_DOMAIN}")
     config=$(echo "$secret" |
         sed -ne 's/^  kubeconfig: //p' | base64 -d |
         sed -Ee "s|server: https://.*|server: https://${lb_ip}:6443|" | base64 -w0)

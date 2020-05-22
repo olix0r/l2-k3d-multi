@@ -19,6 +19,12 @@ patchesJson6902:
   path: inject_linkerd.yml
 - target:
     group: apps
+    version: v1
+    kind: Deployment
+    name: vote-bot
+  path: no_replicas.yml
+- target:
+    group: apps
     kind: Deployment
     version: v1
     name: voting
@@ -44,3 +50,4 @@ patchesJson6902:
     version: v1
     name: web-svc
   path: export_service.yml
+

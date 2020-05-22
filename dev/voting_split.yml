@@ -3,5 +3,5 @@
   value:
     - service: voting-svc-east
       weight: 500m
-    - service: voting-svc-wast
+    - service: voting-svc-west
       weight: 500m
