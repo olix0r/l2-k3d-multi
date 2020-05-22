@@ -2,22 +2,6 @@
 
 export ORG_DOMAIN="${ORG_DOMAIN:-k3d.example.com}"
 
-for cluster in dev east west ; do
-    # Setup a gateway on the remote cluster.
-    kubectl --context="k3d-$cluster" create ns linkerd-multicluster
-    linkerd --context="k3d-$cluster" cluster setup-remote \
-            --gateway-namespace=linkerd-multicluster \
-            --service-account-namespace=linkerd-multicluster \
-            --incoming-port=4180 \
-            --probe-port=4181 |
-        kubectl --context="k3d-$cluster" apply -f -
-
-    linkerd --context="k3d-$cluster" install-service-mirror \
-            --namespace=linkerd-multicluster \
-            --log-level=debug |
-        kubectl --context="k3d-$cluster" apply -f -
-done
-
 # Generate credentials so the service-mirror
 #
 # Unfortunately, the credentials have the API server IP as addressed from

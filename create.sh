@@ -64,8 +64,7 @@ for cluster in dev east west ; do
     # Setup a gateway on the remote cluster.
     kubectl --context="k3d-$cluster" create ns linkerd-multicluster
     linkerd --context="k3d-$cluster" cluster setup-remote \
-            --gateway-namespace=linkerd-multicluster \
-            --service-account-namespace=linkerd-multicluster \
+            --namespace=linkerd-multicluster \
             --incoming-port=4180 \
             --probe-port=4181 |
         kubectl --context="k3d-$cluster" apply -f -
