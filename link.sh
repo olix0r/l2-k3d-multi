@@ -14,7 +14,7 @@ fetch_credentials() {
     server_address="https://${lb_ip}:6443"
     
     # shellcheck disable=SC2001  
-    echo "$(linkerd --context="k3d-$cluster" cluster link \
+    echo "$(linkerd --context="k3d-$cluster" multicluster link \
             --cluster-name="$cluster" \
             --remote-cluster-domain="${cluster}.${ORG_DOMAIN}" \
             --cluster-server="$server_address")"

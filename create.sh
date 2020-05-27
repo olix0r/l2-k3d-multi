@@ -66,7 +66,7 @@ for cluster in dev east west ; do
         config.linkerd.io/proxy-version='ver-prevent-loop.0'
 
     # Setup the multicluster components on the server
-    linkerd --context="k3d-$cluster" cluster install --log-level=debug |
+    linkerd --context="k3d-$cluster" multicluster install --log-level=debug |
         kubectl --context="k3d-$cluster" apply -f -
 
 done
