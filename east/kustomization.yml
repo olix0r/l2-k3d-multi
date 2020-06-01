@@ -1,10 +1,10 @@
 bases:
 - ../base
 
-# patchesJson6902:
-#   - path: fail_voting_west.yml
-#     target:
-#       group: split.smi-spec.io
-#       version: v1alpha1
-#       kind: TrafficSplit
-#       name: voting
+patchesJson6902:
+  - path: split_voting_west.yml
+    target:
+      group: split.smi-spec.io
+      version: v1alpha1
+      kind: TrafficSplit
+      name: voting

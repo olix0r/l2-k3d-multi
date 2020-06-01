@@ -26,10 +26,11 @@ for cluster in dev east west ; do
     fi
 
     k3d create cluster "$cluster" \
+        --api-port="$((port++))" \
         --network=multicluster-example \
         --k3s-server-arg="--cluster-domain=$cluster.${ORG_DOMAIN}" \
-        --wait \
-        --api-port="$((port++))"
+        --verbose \
+        --wait
 
     k3d get kubeconfig "$cluster"
 
@@ -63,7 +64,10 @@ for cluster in dev east west ; do
 
     kubectl --context="k3d-$cluster" create ns linkerd-multicluster
     kubectl --context="k3d-$cluster" annotate ns/linkerd-multicluster \
-        config.linkerd.io/proxy-version='ver-prevent-loop.0'
+        config.linkerd.io/proxy-image='olix0r/l2-proxy' \
+        config.linkerd.io/proxy-version='ver-gateway.3'
+    k3d load image -c "$cluster" olix0r/l2-proxy:ver-gateway.3
+    sleep 2
 
     # Setup a gateway to receive traffic from other clusters.
     linkerd --context="k3d-$cluster" cluster setup-remote |
