@@ -11,14 +11,13 @@ fetch_credentials() {
     # Grab the LB IP of cluster's API server & replace it in the secret blob:
     lb_ip=$(kubectl --context="k3d-$cluster" get svc -n kube-system traefik \
         -o 'go-template={{ (index .status.loadBalancer.ingress 0).ip }}')
-    secret=$(linkerd --context="k3d-$cluster" cluster get-credentials \
+    server_address="https://${lb_ip}:6443"
+    
+    # shellcheck disable=SC2001  
+    echo "$(linkerd --context="k3d-$cluster" multicluster link \
             --cluster-name="$cluster" \
-            --remote-cluster-domain="${cluster}.${ORG_DOMAIN}")
-    config=$(echo "$secret" |
-        sed -ne 's/^  kubeconfig: //p' | base64 -d |
-        sed -Ee "s|server: https://.*|server: https://${lb_ip}:6443|" | base64 -w0)
-    # shellcheck disable=SC2001
-    echo "$secret" | sed -e "s/  kubeconfig: .*/  kubeconfig: $config/"
+            --remote-cluster-domain="${cluster}.${ORG_DOMAIN}" \
+            --cluster-server="$server_address")"
 }
 
 # East & West get access to each other.

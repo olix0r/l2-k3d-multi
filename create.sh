@@ -65,11 +65,8 @@ for cluster in dev east west ; do
     kubectl --context="k3d-$cluster" annotate ns/linkerd-multicluster \
         config.linkerd.io/proxy-version='ver-prevent-loop.0'
 
-    # Setup a gateway to receive traffic from other clusters.
-    linkerd --context="k3d-$cluster" cluster setup-remote |
+    # Setup the multicluster components on the server
+    linkerd --context="k3d-$cluster" multicluster install --log-level=debug |
         kubectl --context="k3d-$cluster" apply -f -
 
-    # Setup a service-mirror to discover services from other clusters.
-    linkerd --context="k3d-$cluster" install-service-mirror  --log-level=debug |
-        kubectl --context="k3d-$cluster" apply -f -
 done
