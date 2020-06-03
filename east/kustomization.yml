@@ -2,7 +2,7 @@ bases:
 - ../base
 
 # patchesJson6902:
-#   - path: fail_voting_west.yml
+#   - path: split_voting_west.yml
 #     target:
 #       group: split.smi-spec.io
 #       version: v1alpha1

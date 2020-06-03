@@ -26,10 +26,10 @@ for cluster in dev east west ; do
     fi
 
     k3d create cluster "$cluster" \
+        --api-port="$((port++))" \
         --network=multicluster-example \
         --k3s-server-arg="--cluster-domain=$cluster.${ORG_DOMAIN}" \
-        --wait \
-        --api-port="$((port++))"
+        --wait
 
     k3d get kubeconfig "$cluster"
 
@@ -61,9 +61,13 @@ for cluster in dev east west ; do
     sleep 30
     while ! linkerd --context="k3d-$cluster" check ; do :; done
 
-    kubectl --context="k3d-$cluster" create ns linkerd-multicluster
-    kubectl --context="k3d-$cluster" annotate ns/linkerd-multicluster \
-        config.linkerd.io/proxy-version='ver-prevent-loop.0'
+    # kubectl --context="k3d-$cluster" create ns linkerd-multicluster
+    # kubectl --context="k3d-$cluster" annotate ns/linkerd-multicluster \
+    #     config.linkerd.io/proxy-image='olix0r/l2-proxy' \
+    #     config.linkerd.io/proxy-log-level='linkerd=debug,warn' \
+    #     config.linkerd.io/proxy-version='ver-gateway-no-cache.2'
+    # k3d load image -c "$cluster" olix0r/l2-proxy:ver-gateway-no-cache.1
+    # sleep 2
 
     # Setup the multicluster components on the server
     linkerd --context="k3d-$cluster" multicluster install --log-level=debug |
