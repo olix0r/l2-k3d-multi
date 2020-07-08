@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Creates three k3d clusters: dev, east, & west.
+# Creates three k3d clusters: east, & west.
 #
 
 set -eu
@@ -19,7 +19,7 @@ step certificate create \
     --no-password  --insecure --force
 
 port=6440
-for cluster in dev east west ; do
+for cluster in east west ; do
     if k3d get cluster "$cluster" >/dev/null 2>&1 ; then
         echo "Already exists: $cluster" >&2
         exit 1

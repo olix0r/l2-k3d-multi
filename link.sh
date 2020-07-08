@@ -18,10 +18,12 @@ fetch_credentials() {
             --api-server-address="https://${lb_ip}:6443")"
 }
 
+ACTION="${ACTION:-apply}"
+
 # East & West get access to each other.
-fetch_credentials east | kubectl --context=k3d-west apply -n linkerd-multicluster -f -
-fetch_credentials west | kubectl --context=k3d-east apply -n linkerd-multicluster -f -
+fetch_credentials east | kubectl --context=k3d-west "$ACTION" -n linkerd-multicluster -f -
+fetch_credentials west | kubectl --context=k3d-east "$ACTION" -n linkerd-multicluster -f -
 
 # Dev gets access to both clusters.
-fetch_credentials east | kubectl --context=k3d-dev apply -n linkerd-multicluster -f -
-fetch_credentials west | kubectl --context=k3d-dev apply -n linkerd-multicluster -f -
+#fetch_credentials east | kubectl --context=k3d-dev "$ACTION" -n linkerd-multicluster -f -
+#fetch_credentials west | kubectl --context=k3d-dev "$ACTION" -n linkerd-multicluster -f -
