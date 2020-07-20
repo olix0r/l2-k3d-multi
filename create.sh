@@ -8,7 +8,27 @@ set -x
 
 export ORG_DOMAIN="${ORG_DOMAIN:-k3d.example.com}"
 
-CA_DIR=$(mktemp --tmpdir="${TMPDIR:-/tmp}" -d k3d-ca.XXXXX)
+if ! command -v linkerd &>/dev/null
+then
+    echo "Install Linkerd with the command"
+    echo "curl -sL https://run.linkerd.io/install | sh"
+    exit 1
+fi
+
+case $(uname) in
+	Darwin)
+		# host_platform=darwin
+        CA_DIR=$(mktemp -d k3d-ca.XXXXX)
+		;;
+	Linux)
+		# host_platform=linux
+        CA_DIR=$(mktemp --tmpdir="${TMPDIR:-/tmp}" -d k3d-ca.XXXXX)
+		;;
+	*)
+		echo "Unknown operating system: $(uname)"
+        exit 1
+		;;
+esac
 
 # Generate the trust roots. These never touch the cluster. In the real world
 # we'd squirrel these away in a vault.
@@ -20,18 +40,18 @@ step certificate create \
 
 port=6440
 for cluster in dev east west ; do
-    if k3d get cluster "$cluster" >/dev/null 2>&1 ; then
+    if k3d cluster get "$cluster" >/dev/null 2>&1 ; then
         echo "Already exists: $cluster" >&2
         exit 1
     fi
 
-    k3d create cluster "$cluster" \
+    k3d cluster create "$cluster" \
         --api-port="$((port++))" \
         --network=multicluster-example \
         --k3s-server-arg="--cluster-domain=$cluster.${ORG_DOMAIN}" \
         --wait
 
-    k3d get kubeconfig "$cluster"
+    k3d kubeconfig get "$cluster"
 
     # Check that the cluster is up and running.
     while ! linkerd --context="k3d-$cluster" check --pre ; do :; done
