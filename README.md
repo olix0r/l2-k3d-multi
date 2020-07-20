@@ -6,6 +6,7 @@ failover & traffic-splitting in a multi-cluster mesh of Kubernetes clusters.
 - [`k3d:v3`](https://github.com/rancher/k3d/releases/tag/v3.0.0-beta.1)
 - [`smallstep/cli`](https://github.com/smallstep/cli/releases)
 - [`linkerd:edge-20.5.3`+](https://github.com/linkerd/linkerd2/releases)
+- [`kubectl 1.16`+](https://github.com/kubernetes/kubectl/releases)
 
 [`./create.sh`](./create.sh) initializes a temporary CA and a set of clusters
 in `k3d`: _dev_, _east_, and _west_.
