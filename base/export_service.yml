@@ -1,6 +1,4 @@
 - op: add
-  path: /metadata/annotations
+  path: /metadata/labels
   value:
-    mirror.linkerd.io/gateway-name: linkerd-gateway
-    mirror.linkerd.io/gateway-ns: linkerd-multicluster
-     
+    mirror.linkerd.io/exported: "true"

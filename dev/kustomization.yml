@@ -1,6 +1,9 @@
 bases:
 - ../base
 
+resources:
+- profiles.yml
+
 patchesJson6902:
   - path: emoji_split.yml
     target:

@@ -6,16 +6,9 @@ resources:
 
 patchesJson6902:
 - target:
-    group: apps
-    kind: Deployment
+    kind: Namespace
     version: v1
-    name: emoji
-  path: inject_linkerd.yml
-- target:
-    group: apps
-    kind: Deployment
-    version: v1
-    name: vote-bot
+    name: emojivoto
   path: inject_linkerd.yml
 - target:
     group: apps
@@ -23,18 +16,6 @@ patchesJson6902:
     kind: Deployment
     name: vote-bot
   path: no_replicas.yml
-- target:
-    group: apps
-    kind: Deployment
-    version: v1
-    name: voting
-  path: inject_linkerd.yml
-- target:
-    group: apps
-    kind: Deployment
-    version: v1
-    name: web
-  path: inject_linkerd.yml
 - target:
     kind: Service
     version: v1
@@ -50,4 +31,3 @@ patchesJson6902:
     version: v1
     name: web-svc
   path: export_service.yml
-
