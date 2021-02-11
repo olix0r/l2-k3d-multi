@@ -6,10 +6,10 @@
 set -eu
 set -x
 
-export ORG_DOMAIN="${ORG_DOMAIN:-k3d.example.com}"
+ORG_DOMAIN="${ORG_DOMAIN:-k3d.example.com}"
+LINKERD="${LINKERD:-linkerd}"
 
 CA_DIR=$(mktemp --tmpdir="${TMPDIR:-/tmp}" -d k3d-ca.XXXXX)
-LINKERD="${LINKERD:-linkerd}"
 
 # Generate the trust roots. These never touch the cluster. In the real world
 # we'd squirrel these away in a vault.

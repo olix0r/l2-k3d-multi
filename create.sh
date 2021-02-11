@@ -8,8 +8,6 @@ set -x
 
 export ORG_DOMAIN="${ORG_DOMAIN:-k3d.example.com}"
 
-CA_DIR=$(mktemp --tmpdir="${TMPDIR:-/tmp}" -d k3d-ca.XXXXX)
-
 port=6440
 for cluster in dev east west ; do
     if k3d cluster get "$cluster" >/dev/null 2>&1 ; then
