@@ -3,14 +3,17 @@
 This demo uses Linkerd's new multicluster functionality to demonstrate
 failover & traffic-splitting in a multi-cluster mesh of Kubernetes clusters.
 
-- [`k3d:v3`](https://github.com/rancher/k3d/releases/tag/v3.2.0)
+- [`k3d:v4`](https://github.com/rancher/k3d/releases/tag/v4.1.1)
 - [`smallstep/cli`](https://github.com/smallstep/cli/releases)
-- [`linkerd:stable-2.9.0`+](https://github.com/linkerd/linkerd2/releases)
+- [`linkerd:stable-2.10.0`+](https://github.com/linkerd/linkerd2/releases)
 
-[`./create.sh`](./create.sh) initializes a temporary CA and a set of clusters
-in `k3d`: _dev_, _east_, and _west_.
+[`./create.sh`](./create.sh) initializes a set of clusters in `k3d`: _dev_,
+_east_, and _west_.
 
-We can then install the [app](https://github.com/BuoyantIO/emojivoto/) into
+[`./install.sh`](./install.sh) creates a temporary CA and installs Linkerd
+into these clusters.
+
+We can then deploy the [app](https://github.com/BuoyantIO/emojivoto/) into
 the _east_ and _west_ clusters:
 
 ```sh
