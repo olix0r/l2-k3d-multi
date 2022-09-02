@@ -1,0 +1,25 @@
+{
+    "name": "l2-k3d-multi",
+    "image": "ghcr.io/linkerd/dev:v31",
+    "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "NathanRidley.autotrim",
+        "samverschueren.final-newline",
+        "tamasfe.even-better-toml",
+    ],
+    "runArgs": [
+        "--init",
+        // Limit container memory usage.
+        "--memory=12g",
+        "--memory-swap=12g",
+        // Use the host network so we can access k3d, etc.
+        "--net=host",
+    ],
+    "onCreateCommand": ".devcontainer/on-create.sh",
+    "overrideCommand": false,
+    "remoteUser": "code",
+    "mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
+    ]
+}

@@ -11,6 +11,16 @@ LINKERD="${LINKERD:-linkerd}"
 
 CA_DIR=$(mktemp --tmpdir="${TMPDIR:-/tmp}" -d k3d-ca.XXXXX)
 
+if ! command -v linkerd >/dev/null 2>&1 ; then
+    echo "linkerd not found in PATH" >&2
+    exit 1
+fi
+
+if ! command -v linkerd-smi >/dev/null 2>&1 ; then
+    echo "linkerd-smi not found in PATH" >&2
+    exit 1
+fi
+
 # Generate the trust roots. These never touch the cluster. In the real world
 # we'd squirrel these away in a vault.
 step certificate create \
@@ -35,6 +45,9 @@ for cluster in dev east west ; do
         --profile=intermediate-ca \
         --not-after 8760h --no-password --insecure
 
+    $LINKERD --context="k3d-$cluster" install --crds |
+        kubectl --context="k3d-$cluster" apply -f -
+
     # Install Linkerd into the cluster.
     $LINKERD --context="k3d-$cluster" install \
             --proxy-log-level="linkerd=debug,trust_dns=debug,info" \
@@ -48,6 +61,9 @@ for cluster in dev east west ; do
     # Wait some time and check that the cluster has started properly.
     sleep 30
     while ! $LINKERD --context="k3d-$cluster" check ; do :; done
+
+    linkerd smi --context="k3d-$cluster" install --set="clusterDomain=$domain" |
+        kubectl --context="k3d-$cluster" apply -f -
 
     kubectl --context="k3d-$cluster" create ns linkerd-multicluster
     kubectl --context="k3d-$cluster" annotate ns/linkerd-multicluster \
